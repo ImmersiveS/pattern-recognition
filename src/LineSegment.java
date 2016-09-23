@@ -7,7 +7,6 @@
  *  An immutable data type for Line segments in the plane.
  *  For use on Coursera, Algorithms Part I programming assignment.
  *
- *  DO NOT MODIFY THIS CODE.
  *
  *************************************************************************/
 
