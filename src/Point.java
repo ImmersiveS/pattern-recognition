@@ -58,21 +58,23 @@ public class Point implements Comparable<Point> {
      * @return the slope between this point and the specified point
      */
     public double slopeTo(Point that) {
+        double deltaY = that.y - this.y;
+        double deltaX = that.x - this.x;
 
-        double slope;
-
-        if(that.y == this.y)
-            return +0.0;
-
-        if(that.x == this.x)
-            return Double.POSITIVE_INFINITY;
-
-        if(this.equals(that))
+        // treat the slope of a degenerate line segment
+        // (between a point and itself) as negative infinity.
+        if (deltaX == 0 && deltaY == 0) {
             return Double.NEGATIVE_INFINITY;
+        }
+        // treat the slope of a vertical line segment as positive infinity;
+        else if (deltaX == 0) {
+            return Double.POSITIVE_INFINITY;
+        }
+        else if (deltaY == 0) {
+            return 0.0; /// ensure return positive zero, and never negative zero
+        }
 
-        slope = (that.y - this.y)/(that.x - this.x);
-
-        return slope;
+        return deltaY/deltaX;
     }
 
     /**
@@ -89,13 +91,15 @@ public class Point implements Comparable<Point> {
      */
     public int compareTo(Point that) {
 
-        if(this.y < that.y || this.x < that.x)
+        if (that.y > this.y || that.x > this.x) {
             return -1;
-
-        else if(this.y > that.y || this.x > that.x)
+        }
+        else if (this.y > that.y || this.x > that.x) {
             return 1;
-
-        return 0;
+        }
+        else {
+            return 0;
+        }
     }
 
     /**
@@ -127,6 +131,4 @@ public class Point implements Comparable<Point> {
     /**
      * Unit tests the Point data type.
      */
-    public static void main(String[] args) {
-    }
 }
