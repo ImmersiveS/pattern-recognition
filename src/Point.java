@@ -106,24 +106,8 @@ public class Point implements Comparable<Point> {
      */
     public Comparator<Point> slopeOrder() {
 
-        Comparator<Point> comparator = new Comparator<Point>() {
-
-            @Override
-            public int compare(Point startPoint, Point endPoint) {
-
-                double startPointSlope = slopeTo(startPoint);
-                double endPointSlope = slopeTo(endPoint);
-
-                if(startPointSlope < endPointSlope)
-                    return -1;
-
-                else if(startPointSlope > endPointSlope)
-                    return 1;
-
-                return 0;
-
-            }
-        };
+        Comparator<Point> comparator = (Point startPoint, Point endPoint)->
+                (int)Math.round((slopeTo(startPoint) - slopeTo(endPoint)));
 
         return comparator;
     }
