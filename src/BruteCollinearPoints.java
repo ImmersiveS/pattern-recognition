@@ -4,7 +4,6 @@ import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class BruteCollinearPoints {
 
@@ -16,7 +15,6 @@ public class BruteCollinearPoints {
     public BruteCollinearPoints(Point[] points) {
 
         int N = points.length;
-        lineSegments = new LineSegment[1];
 
         if(points == null)
             throw new NullPointerException();
@@ -45,11 +43,22 @@ public class BruteCollinearPoints {
                         Point s = points[l];
 
                         if (p.slopeTo(q) == q.slopeTo(r)
-                                && q.slopeTo(r) == r.slopeTo(s)
-                                && p.compareTo(q) < 1
-                                && q.compareTo(r) < 1
-                                && r.compareTo(s) < 1) {
+                                &&
+                                q.slopeTo(r) == r.slopeTo(s)
+                                &&
+                                !hugSegments.contains(new LineSegment(p, s))
+                                &&
+                                !hugSegments.contains(new LineSegment(p, q))
+                                &&
+                                !hugSegments.contains(new LineSegment(p, r))
+                                &&
+                                !hugSegments.contains(new LineSegment(q, s))
+                                &&
+                                !hugSegments.contains(new LineSegment(q, r))
+                                &&
+                                !hugSegments.contains(new LineSegment(r, s))) {
                             hugSegments.add(new LineSegment(p,s));
+                            numOfLineSegments++;
                         }
                     }
                 }
@@ -57,8 +66,9 @@ public class BruteCollinearPoints {
         }
 
         lineSegments = new LineSegment[hugSegments.size()];
-        for(int i = 0; i < hugSegments.size(); i++)
+        for(int i = 0; i < hugSegments.size(); i++) {
             lineSegments[i] = hugSegments.get(i);
+        }
     }
 
     // the number of line segments
@@ -91,7 +101,7 @@ public class BruteCollinearPoints {
         StdDraw.show();
 
         // print and draw the line segments
-        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+        FastCollinearPoints collinear = new FastCollinearPoints(points);
         for (LineSegment segment : collinear.segments()) {
             StdOut.println(segment);
             segment.draw();
